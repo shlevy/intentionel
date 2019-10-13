@@ -1,0 +1,19 @@
+* DONE Inactive because done despite deadline
+  DEADLINE: <2019-10-13 Sun>
+  :PROPERTIES:
+  :active:   nil
+  :END:
+* Inactive because not TODO despite schedule
+  SCHEDULED: <2019-10-13 Sun>
+  :PROPERTIES:
+  :active:   nil
+  :END:
+* BACKLOG Active because deadline
+  DEADLINE: <2019-10-14 Mon>
+  :PROPERTIES:
+  :active:   t
+  :END:
+* TODO Active because todo
+  :PROPERTIES:
+  :active:   t
+  :END:
