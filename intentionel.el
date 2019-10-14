@@ -21,19 +21,20 @@
 (require 'subr-x)
 (require 'org)
 
-(defun intentionel--active-task-p ()
-  "Is the current org entry an \"active\" task?
+(defun intentionel--active-task-p (POM)
+  "Is the org entry at POM an \"active\" task?
 
 An active task is one that will show up on the agenda, i.e. is in
 TODO state, in IN PROGRESS state, is scheduled, or has a deadline."
-  (when-let ((props (org-entry-properties))
-	     (state (cdr (assoc "TODO" props))))
-    (when (and (not (string= state "DONE"))
-	       (or (string= state "TODO")
-		   (string= state "IN PROGRESS")
-		   (assoc "SCHEDULED" props)
-		   (assoc "DEADLINE" props)))
-      t)))
+  (org-with-point-at POM
+    (when-let ((props (org-entry-properties))
+	       (state (cdr (assoc "TODO" props))))
+      (when (and (not (string= state "DONE"))
+		 (or (string= state "TODO")
+		     (string= state "IN PROGRESS")
+		     (assoc "SCHEDULED" props)
+		     (assoc "DEADLINE" props)))
+	t))))
 
 (provide 'intentionel)
 

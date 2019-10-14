@@ -19,7 +19,7 @@
   "Tests active task detection predicate."
   (with-current-buffer (find-file-noselect test-org)
     (while (progn
-	     (should (equal (intentionel--active-task-p) (string= "t" (org-entry-get nil "active"))))
+	     (should (equal (intentionel--active-task-p (point)) (string= "t" (org-entry-get nil "active"))))
 	     (outline-next-heading)))
     ))
 
