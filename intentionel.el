@@ -21,12 +21,12 @@
 (require 'subr-x)
 (require 'org)
 
-(defun intentionel--active-task-p (POM)
+(defun intentionel--active-task-p (pom)
   "Is the org entry at POM an \"active\" task?
 
 An active task is one that will show up on the agenda, i.e. is in
 TODO state, in IN PROGRESS state, is scheduled, or has a deadline."
-  (org-with-point-at POM
+  (org-with-point-at pom
     (when-let ((props (org-entry-properties))
 	       (state (cdr (assoc "TODO" props))))
       (when (and (not (string= state "DONE"))
