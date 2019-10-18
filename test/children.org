@@ -17,7 +17,7 @@
   :BRAIN_CHILDREN: 52103d91-c5e5-4016-8089-48eea5377b5a children
   :test_id: 0
   :END:
-** Direct child
+** TODO Direct child
   :PROPERTIES:
   :test_id: 1
   :END:

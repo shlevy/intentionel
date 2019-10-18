@@ -69,6 +69,16 @@ Returns a stream of markers"
     (lambda (m) (not (org-brain-filep m)))
     (stream (org-brain-children entry)))))
 
+(defun intentionel--active-p (intention)
+  "Is INTENTION active?"
+  (let* ((brain-children
+	  (intentionel--org-brain-headline-children intention))
+	 (org-children
+	  (intentionel--org-children
+	   (org-brain-entry-marker intention)))
+	 (all-children (stream-append brain-children org-children)))
+    (seq-some #'intentionel--active-task-p all-children)))
+
 (provide 'intentionel)
 
 ;;; intentionel.el ends here

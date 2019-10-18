@@ -38,4 +38,9 @@
 	 (ids-list (seq-into ids 'list)))
     (should (equal ids-list '("5")))))
 
+(ert-deftest intentionel-test-active-intention ()
+  "Tests detection of active an inactive intentions"
+  (should (intentionel--active-p '("children" "Parent" "1ce6322e-04c4-4b11-bbe3-41124a9d4373")))
+  (should-not (intentionel--active-p '("children" "Sibling" "815fba5f-3f37-4af9-b200-e74e351de6a5"))))
+
 ;;; intentionel-test.el ends here
