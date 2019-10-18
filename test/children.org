@@ -1,0 +1,30 @@
+* Sibling
+  :PROPERTIES:
+  :ID:       815fba5f-3f37-4af9-b200-e74e351de6a5
+  :test_id: 4
+  :END:
+** Indirect child
+   :PROPERTIES:
+   :ID:       52103d91-c5e5-4016-8089-48eea5377b5a
+   :BRAIN_PARENTS: 1ce6322e-04c4-4b11-bbe3-41124a9d4373
+   :test_id: 5
+   :END:
+
+* Parent
+  :PROPERTIES:
+  :ID:       1ce6322e-04c4-4b11-bbe3-41124a9d4373
+  :BRAIN_CHILDREN: 52103d91-c5e5-4016-8089-48eea5377b5a
+  :test_id: 0
+  :END:
+** Direct child
+  :PROPERTIES:
+  :test_id: 1
+  :END:
+*** Not a child
+  :PROPERTIES:
+  :test_id: 2
+  :END:
+** Another direct child
+  :PROPERTIES:
+  :test_id: 3
+  :END:

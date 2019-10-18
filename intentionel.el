@@ -1,11 +1,11 @@
-;;; intentionel.el --- Intention tracking with org-brain
+;;; intentionel.el --- Intention tracking with org-brain  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2019 Shea Levy
 
 ;; Author: Shea Levy
 ;; URL: https://github.com/shlevy/intentionel
 ;; Version: 1.0.0
-;; Package-Requires: ((org "20190527") (emacs "26.3"))
+;; Package-Requires: (org stream)
 
 ;;; Commentary:
 
@@ -20,6 +20,7 @@
 
 (require 'subr-x)
 (require 'org)
+(require 'stream)
 
 (defun intentionel--active-task-p (pom)
   "Is the org entry at POM an \"active\" task?
@@ -35,6 +36,27 @@ TODO state, in IN PROGRESS state, is scheduled, or has a deadline."
 		     (assoc "SCHEDULED" props)
 		     (assoc "DEADLINE" props)))
 	t))))
+
+(defun intentionel--org-children (pom)
+  "Get the immediate 'org-mode' children of the entry at POM.
+
+Returns a stream of markers."
+  (org-with-point-at pom
+    (let ((child-level (+ (funcall outline-level) 1)))
+      (cl-labels
+	  ((future-siblings
+	    (node)
+	    (org-with-point-at node
+	      (while (and
+		      (outline-next-heading)
+		      (> (funcall outline-level) child-level)))
+	      (if (and
+		   (not (eobp))
+		   (= (funcall outline-level) child-level))
+		  (let ((next-node (point-marker)))
+		    (stream-cons next-node (future-siblings next-node)))
+		(stream-empty)))))
+	(future-siblings pom)))))
 
 (provide 'intentionel)
 
