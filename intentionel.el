@@ -42,22 +42,22 @@ TODO state, in IN PROGRESS state, is scheduled, or has a deadline."
   "Get the immediate 'org-mode' children of the entry at POM.
 
 Returns a stream of markers."
-  (org-with-point-at pom
-    (let ((child-level (+ (funcall outline-level) 1)))
-      (cl-labels
-	  ((future-siblings
-	    (node)
-	    (org-with-point-at node
-	      (while (and
-		      (outline-next-heading)
-		      (> (funcall outline-level) child-level)))
-	      (if (and
-		   (not (eobp))
-		   (= (funcall outline-level) child-level))
-		  (let ((next-node (point-marker)))
-		    (stream-cons next-node (future-siblings next-node)))
-		(stream-empty)))))
-	(future-siblings pom)))))
+  (let ((child-level (org-with-point-at pom
+		       (+ (funcall outline-level) 1))))
+    (cl-labels
+	((future-siblings
+	  (node)
+	  (org-with-point-at node
+	    (while (and
+		    (outline-next-heading)
+		    (> (funcall outline-level) child-level)))
+	    (if (and
+		 (not (eobp))
+		 (= (funcall outline-level) child-level))
+		(let ((next-node (point-marker)))
+		  (stream-cons next-node (future-siblings next-node)))
+	      (stream-empty)))))
+      (future-siblings pom))))
 
 (defun intentionel--org-brain-headline-children (entry)
   "Get the immediate 'org-brain' children that are headlines of the ENTRY.
