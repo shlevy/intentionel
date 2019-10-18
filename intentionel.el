@@ -5,7 +5,7 @@
 ;; Author: Shea Levy
 ;; URL: https://github.com/shlevy/intentionel
 ;; Version: 1.0.0
-;; Package-Requires: (org stream)
+;; Package-Requires: (org stream org-brain)
 
 ;;; Commentary:
 
@@ -21,6 +21,7 @@
 (require 'subr-x)
 (require 'org)
 (require 'stream)
+(require 'org-brain)
 
 (defun intentionel--active-task-p (pom)
   "Is the org entry at POM an \"active\" task?
@@ -57,6 +58,16 @@ Returns a stream of markers."
 		    (stream-cons next-node (future-siblings next-node)))
 		(stream-empty)))))
 	(future-siblings pom)))))
+
+(defun intentionel--org-brain-headline-children (entry)
+  "Get the immediate 'org-brain' children that are headlines of the ENTRY.
+
+Returns a stream of markers"
+  (seq-map
+   #'org-brain-entry-marker
+   (seq-filter
+    (lambda (m) (not (org-brain-filep m)))
+    (stream (org-brain-children entry)))))
 
 (provide 'intentionel)
 

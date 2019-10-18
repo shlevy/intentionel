@@ -3,6 +3,4 @@
 
 (package-file "intentionel.el")
 
-(development
- (depends-on "ert-runner")
- (depends-on "org-brain"))
+(development (depends-on "ert-runner"))

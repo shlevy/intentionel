@@ -30,4 +30,12 @@
 	 (ids-list (seq-into ids 'list)))
     (should (equal ids-list '("1" "3")))))
 
+(ert-deftest intentionel-test-org-brain-headline-children ()
+  "Tests detection of org-brain children that are headline entries."
+  (let* ((parent '("children" "Parent" "1ce6322e-04c4-4b11-bbe3-41124a9d4373"))
+	 (brain-children (intentionel--org-brain-headline-children parent))
+	 (ids (seq-map (lambda (p) (org-entry-get p "test_id")) brain-children))
+	 (ids-list (seq-into ids 'list)))
+    (should (equal ids-list '("5")))))
+
 ;;; intentionel-test.el ends here
