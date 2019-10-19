@@ -5,7 +5,7 @@
 ;; Author: Shea Levy
 ;; URL: https://github.com/shlevy/intentionel
 ;; Version: 1.0.0
-;; Package-Requires: (org stream org-brain)
+;; Package-Requires: (org stream org-brain dash-functional)
 
 ;;; Commentary:
 
@@ -22,6 +22,7 @@
 (require 'org)
 (require 'stream)
 (require 'org-brain)
+(require 'dash-functional)
 
 (defun intentionel--active-task-p (pom)
   "Is the org entry at POM an \"active\" task?
@@ -66,7 +67,7 @@ Returns a stream of markers"
   (seq-map
    #'org-brain-entry-marker
    (seq-filter
-    (lambda (m) (not (org-brain-filep m)))
+    (-not #'org-brain-filep)
     (stream (org-brain-children entry)))))
 
 (defun intentionel--active-p (intention)
@@ -82,12 +83,11 @@ Returns a stream of markers"
 ;;;###autoload
 (defun intentionel-visualize-first-inactive (root)
   "Visualize the first inactive descendant of ROOT, if any."
-  (interactive "sRoot:")
+  (interactive "sRoot: ")
   (when-let
       ((descendants (seq-subseq (org-brain-descendants root) 0 -1))
-       (first (seq-find
-	       (lambda (d) (not (intentionel--active-p d)))
-	       descendants)))
+       (first (seq-find (-not #'intentionel--active-p)
+			descendants)))
     (org-brain-visualize first)))
 
 (provide 'intentionel)
