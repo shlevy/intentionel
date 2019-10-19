@@ -79,6 +79,17 @@ Returns a stream of markers"
 	 (all-children (stream-append brain-children org-children)))
     (seq-some #'intentionel--active-task-p all-children)))
 
+;;;###autoload
+(defun intentionel-visualize-first-inactive (root)
+  "Visualize the first inactive descendant of ROOT, if any."
+  (interactive "sRoot:")
+  (when-let
+      ((descendants (seq-subseq (org-brain-descendants root) 0 -1))
+       (first (seq-find
+	       (lambda (d) (not (intentionel--active-p d)))
+	       descendants)))
+    (org-brain-visualize first)))
+
 (provide 'intentionel)
 
 ;;; intentionel.el ends here
