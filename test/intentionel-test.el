@@ -41,6 +41,7 @@
 (ert-deftest intentionel-test-active-intention ()
   "Tests detection of active an inactive intentions"
   (should (intentionel--active-p '("children" "Parent" "1ce6322e-04c4-4b11-bbe3-41124a9d4373")))
+  (should (intentionel--active-p '("children" "Active intention and task" "f7137594-aa74-45b8-b644-2a22ec45c514")))
   (should-not (intentionel--active-p '("children" "Sibling" "815fba5f-3f37-4af9-b200-e74e351de6a5"))))
 
 ;;; intentionel-test.el ends here

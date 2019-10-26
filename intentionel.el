@@ -4,7 +4,7 @@
 
 ;; Author: Shea Levy
 ;; URL: https://github.com/shlevy/intentionel
-;; Version: 1.0.0
+;; Version: 1.0.1
 ;; Package-Requires: (org stream org-brain dash-functional)
 
 ;;; Commentary:
@@ -71,14 +71,19 @@ Returns a stream of markers"
     (stream (org-brain-children entry)))))
 
 (defun intentionel--active-p (intention)
-  "Is INTENTION active?"
-  (let* ((brain-children
-	  (intentionel--org-brain-headline-children intention))
-	 (org-children
-	  (intentionel--org-children
-	   (org-brain-entry-marker intention)))
-	 (all-children (stream-append brain-children org-children)))
-    (seq-some #'intentionel--active-task-p all-children)))
+  "Is INTENTION active?
+
+An intention is active if it is itself an active task or it has at
+least one such among its children."
+  (let ((intention-marker (org-brain-entry-marker intention)))
+    (or
+     (intentionel--active-task-p intention-marker)
+     (let* ((brain-children
+	     (intentionel--org-brain-headline-children intention))
+	    (org-children
+	     (intentionel--org-children intention-marker))
+	    (all-children (stream-append brain-children org-children)))
+       (seq-some #'intentionel--active-task-p all-children)))))
 
 ;;;###autoload
 (defun intentionel-visualize-first-inactive (root)
